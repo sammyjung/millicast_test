@@ -2,6 +2,7 @@ import './App.css';
 import Header from './components/Header';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import Main from './components/Main';
+import Viewer from './components/Viewer';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Header} />
           <Route path="/master" component={Main} />
-          <Route path="/subscribe" component={Header} />
+          <Route path="/subscribe" component={Viewer} />
         </Switch>
       </div>
     </BrowserRouter>

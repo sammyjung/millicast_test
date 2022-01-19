@@ -34,6 +34,7 @@ const Main = () => {
       console.log('Connection failed, handle error', e);
     }
     videoRef.current.srcObject = mediaStream;
+    // console.log('미디어 스트림:', mediaStream);
   }
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Main = () => {
 
   return (
     <PlayerContainer>
-      <Player ref={videoRef} autoPlay muted></Player>;
+      <Player ref={videoRef} autoPlay muted></Player>
     </PlayerContainer>
   );
 };
