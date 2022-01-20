@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { Director, Publish } from '@millicast/sdk';
 
 const Main = () => {
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
-  const [isAudioMuted, setIsAudioMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState({ video: true, audio: true });
   const [stream, setStream] = useState({});
   const videoRef = useRef();
 
@@ -39,18 +38,21 @@ const Main = () => {
     // 비디오 요소에 src에 스트림 주입!
     videoRef.current.srcObject = mediaStream;
 
-    setIsVideoMuted(false);
-    setIsAudioMuted(false);
+    setIsMuted({ ...isMuted, video: false, audio: false });
   }
 
   const handleCamClick = () => {
-    stream.getVideoTracks().forEach(track => (track.enabled = isVideoMuted));
-    setIsVideoMuted(!isVideoMuted);
+    stream.getVideoTracks().forEach(track => (track.enabled = isMuted.video));
+    setIsMuted({ ...isMuted, video: !isMuted.video, audio: isMuted.audio });
   };
 
   const handleMicClick = () => {
-    stream.getAudioTracks().forEach(track => (track.enabled = isAudioMuted));
-    setIsAudioMuted(!isAudioMuted);
+    stream.getAudioTracks().forEach(track => (track.enabled = isMuted.audio));
+    setIsMuted({
+      ...isMuted,
+      video: isMuted.video,
+      audio: !isMuted.audio,
+    });
   };
 
   useEffect(() => {}, []);
@@ -60,10 +62,10 @@ const Main = () => {
       <Player ref={videoRef} autoPlay muted></Player>
       {/* todo/ 비디오 위에 버튼을 보이게 하기 */}
       <LiveStartBtn onClick={startBroadcast}>방송시작</LiveStartBtn>
-      <CamMuteBtn onClick={handleCamClick} isDisable={isVideoMuted}>
+      <CamMuteBtn onClick={handleCamClick} isDisable={isMuted.video}>
         카메라
       </CamMuteBtn>
-      <MicMuteBtn onClick={handleMicClick} isDisable={isAudioMuted}>
+      <MicMuteBtn onClick={handleMicClick} isDisable={isMuted.audio}>
         오디오
       </MicMuteBtn>
     </PlayerContainer>
