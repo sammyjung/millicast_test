@@ -21,6 +21,9 @@ const Viewer = () => {
       tokenGenerator,
       videoRef.current
     );
+    // millicastView.on('track', event => {
+    //   console.log(event);
+    // });
 
     //Start connection to publisher
     try {

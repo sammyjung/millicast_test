@@ -21,6 +21,7 @@ const Main = () => {
 
       const cameras = devices.filter(device => device.kind === 'videoinput');
       setCameras(cameras);
+      console.log('카메라:', cameras);
     } catch (e) {
       console.log(e);
     }
@@ -60,6 +61,7 @@ const Main = () => {
       audio: true,
       video: true,
     });
+    console.log('0번 미디어 스트림:', mediaStream);
 
     //Create a new instance
     const millicastPublish = new Publish(streamName, tokenGenerator);
@@ -72,7 +74,6 @@ const Main = () => {
     }
     // 비디오 요소에 src에 스트림 주입!
     videoRef.current.srcObject = mediaStream;
-    console.log('미디어 스트림:', mediaStream);
 
     setStream(mediaStream);
     setIsMuted({ ...isMuted, video: false, audio: false });
@@ -100,7 +101,7 @@ const Main = () => {
 
   const changeMics = e => {
     const { value } = e.target;
-    console.log('카메ID:', value);
+    console.log('마이크ID:', value);
     changeSounds(value);
   };
 
@@ -167,7 +168,7 @@ const Main = () => {
           );
         })}
       </SelectDevices>
-      <SelectDevices onChange={e => changeSounds(e)}>
+      <SelectDevices onChange={e => changeMics(e)}>
         {mics.map((mic, id) => {
           return (
             <option key={id} value={mic.deviceId}>
