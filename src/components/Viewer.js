@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
+import RTCVideo from './RTCVideo';
 import { Director, View } from '@millicast/sdk';
 
 const Viewer = () => {
-  const videoRef = useRef();
+  const [stream, setStream] = useState();
 
   async function startUserBroad() {
     const streamName = 'ku6o96yu';
@@ -16,22 +16,23 @@ const Viewer = () => {
         streamAccountId: accountId,
       });
 
-    const millicastView = new View(
-      streamName,
-      tokenGenerator,
-      videoRef.current
-    );
-    // millicastView.on('track', event => {
-    //   console.log(event);
-    // });
+    const millicastView = new View(streamName, tokenGenerator, null, true);
 
-    //Start connection to publisher
+    millicastView.on('track', event => {
+      // setStream(event.streams[0]);
+      console.log('stream added');
+      setStream(event.streams[0]);
+    });
+    console.log('stream', stream);
+
     try {
+      console.log('connect view');
       await millicastView.connect({
-        events: ['active', 'inactive'],
+        events: ['track'],
       });
     } catch (e) {
       console.log('Connection failed, handle error', e);
+      // setTimeout(startUserBroad(), 10000);
     }
   }
 
@@ -41,7 +42,7 @@ const Viewer = () => {
 
   return (
     <PlayerContainer>
-      <Player ref={videoRef} autoPlay />
+      <RTCVideo mediaStream={stream} />
     </PlayerContainer>
   );
 };
