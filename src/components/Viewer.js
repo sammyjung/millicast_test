@@ -36,9 +36,7 @@ const Viewer = () => {
     }
   }
 
-  useEffect(() => {
-    startUserBroad();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <PlayerContainer>
@@ -58,3 +56,5 @@ const Player = styled.video`
   width: 600px;
   height: 400px;
 `;
+
+const StartViewBtn = styled.button``;

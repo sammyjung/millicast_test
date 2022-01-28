@@ -44,7 +44,7 @@ const Main = () => {
   //   video: { deviceId: { exact: selectedCam } },
   // };
 
-  async function startBroadcast(selectedCam) {
+  async function startBroadcast(stream) {
     const tokenGenerator = () =>
       Director.getPublisher({
         token: publishToken,
@@ -55,13 +55,16 @@ const Main = () => {
     //   audio: true,
     //   video: { deviceId: { exact: selectedCam } },
     // };
+    let mediaStream;
 
-    //Get User camera and microphone
-    const mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
-    });
-    console.log('0번 미디어 스트림:', mediaStream);
+    if (stream) {
+      mediaStream = stream;
+    } else {
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+    }
 
     //Create a new instance
     const millicastPublish = new Publish(streamName, tokenGenerator);
@@ -108,6 +111,7 @@ const Main = () => {
   const changeVideo = selectedCam => {
     navigator.mediaDevices
       .getUserMedia({
+        audio: true,
         video: {
           deviceId: selectedCam,
         },
@@ -115,6 +119,7 @@ const Main = () => {
       .then(function (stream) {
         videoRef.current.srcObject = stream;
         setStream(stream);
+        startBroadcast(stream);
       })
       .catch(function (err) {
         console.error('Error happens:', err);
@@ -124,6 +129,7 @@ const Main = () => {
   const changeSounds = selectedMic => {
     navigator.mediaDevices
       .getUserMedia({
+        video: true,
         audio: {
           deviceId: selectedMic,
         },
@@ -131,6 +137,7 @@ const Main = () => {
       .then(function (stream) {
         videoRef.current.srcObject = stream;
         setStream(stream);
+        startBroadcast(stream);
       })
       .catch(function (err) {
         console.error('Error happens:', err);
@@ -153,6 +160,7 @@ const Main = () => {
       >
         방송시작
       </LiveStartBtn>
+      <LiveStopBtn onClick={() => {}}>방송멈춰!!</LiveStopBtn>
       <CamMuteBtn onClick={handleCamClick} isDisable={isMuted.video}>
         카메라
       </CamMuteBtn>
@@ -201,5 +209,7 @@ const MicMuteBtn = styled.button`
 `;
 
 const LiveStartBtn = styled.button``;
+
+const LiveStopBtn = styled.button``;
 
 const SelectDevices = styled.select``;
