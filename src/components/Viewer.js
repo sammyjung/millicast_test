@@ -7,19 +7,20 @@ const Viewer = () => {
   const [stream, setStream] = useState();
 
   async function startUserBroad() {
-    const streamName = 'ku6o96yu';
+    const streamName = 'workshop-stream-45';
     const accountId = 'CEANfN';
 
     const tokenGenerator = () =>
       Director.getSubscriber({
         streamName: streamName,
         streamAccountId: accountId,
+        subscriberToken:
+          '7261cc27294d128e19ecdc9f631b38af48f989cbaff445318adf41d9b12382f7',
       });
 
     const millicastView = new View(streamName, tokenGenerator, null, true);
 
     millicastView.on('track', event => {
-      // setStream(event.streams[0]);
       console.log('stream added');
       setStream(event.streams[0]);
     });
@@ -36,7 +37,9 @@ const Viewer = () => {
     }
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    startUserBroad();
+  }, []);
 
   return (
     <PlayerContainer>
@@ -51,10 +54,3 @@ const PlayerContainer = styled.div`
   width: 100%;
   height: 600px;
 `;
-
-const Player = styled.video`
-  width: 600px;
-  height: 400px;
-`;
-
-const StartViewBtn = styled.button``;

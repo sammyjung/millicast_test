@@ -11,9 +11,9 @@ const Main = () => {
 
   const videoRef = useRef();
 
-  const streamName = 'ku6o96yu';
+  const streamName = 'workshop-stream-45';
   const publishToken =
-    '9a50a482ba1d738a620dcdc089c0a18a1dfa605fdedd8daa41e06199c5a53a85';
+    'd3a608b8f821b1be41ba38a8b87d07b06aef66ebb26f511d1837355d8b17197c';
 
   async function getCameras() {
     try {
@@ -71,7 +71,9 @@ const Main = () => {
 
     //Start broadcast
     try {
+      console.log('미디어 스트림:', stream);
       await millicastPublish.connect({ mediaStream });
+      console.log('방송시작!');
     } catch (e) {
       console.log('Connection failed, handle error', e);
     }
